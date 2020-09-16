@@ -3,14 +3,19 @@ function [px ,q] = Horner(c ,x0)
 %at a point x0 using Horner's method.
 %   Detailed explanation goes here
 
+% Get the polynomial length
 poly_length = length(c);
-value = c(1);
+
+% Make a new array with length of the polynomial - 1
+q = zeros(1,poly_length-1);
+
+% Initialize px with the first coeff of the polynomial
+px = c(1);
 
 for i = 2:poly_length
-    value = value*x0 + c(i);
+    q(i-1) = px; % Value is equal to the coeff of the resulting polynomial
+    px = px * x0 + c(i); % Go through the next multiply and add operations
 end
-
-px = value;
 
 end
 
