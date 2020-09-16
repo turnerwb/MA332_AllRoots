@@ -29,14 +29,17 @@ pxbest = intmax;        % p(xbest) initialized to max int
 nitr = 0;               % Iteration Counter
 a = x0;                 % Current Iterate (x value)
 
-p_sym = poly2sym(c);                    % Make a symbolic equation p from coeffs
-p_prime_sym = diff(p_sym);              % Get the derivative of p
-p = matlabFunction(p_sym);              % Turn p_sym into a function handle
-p_prime = matlabFunction(p_prime_sym);  % Turn p_prime_sym into a function handle
+p_sym = poly2sym(c);                % Make a symbolic equation p from coeffs
+p_prime_sym = diff(p_sym);          % Get the derivative of p
+c_prime = sym2poly(p_prime_sym);    % Get the coeffs of the derivative of p 
 
 while(true)
-    if(p_prime(a) ~= 0)             % If the derivative isn't exactly 0,
-        a = a - p(a)/p_prime(a);    % find the next iterate
+    
+    [px, q] = Horner(c,a);          % Calculate the value p(a) and the reduced polynomial q
+    p_primex = Horner(c_prime,a);   % Calculate the value p'(a)
+    
+    if(p_primex ~= 0)               % If the derivative isn't exactly 0,
+        a = a - px/p_primex;        % find the next iterate
     else                
         status = 1;                 % Exit if the derivative results in 0
         disp('NewtonPoly failed: It landed at an x where p''(x) is 0');
@@ -44,9 +47,9 @@ while(true)
     end
 
     % If this iteration is better than any previous one, save it
-    if(abs(p(a)) < abs(pxbest))
+    if(abs(px) < abs(pxbest))
         xbest = a;
-        pxbest = p(a);
+        pxbest = px;
     end
     
     % Exit with success if an exact zero is found
@@ -69,17 +72,4 @@ while(true)
     end
 end
 
-% If it found a root, reduce the polynomial and return the result
-if(status == 0)
-    % Divide the symbolic equation p by the root we found to get a quotient
-    divisor_sym = poly2sym([1 -1*xbest]);
-    [r, quotient_sym] = polynomialReduce(p_sym,divisor_sym); 
-
-    % Get the coeffs of the quotient, and evaluate any fractions to decimal
-    q = fliplr(coeffs(quotient_sym));
-    q = double(q);
-    disp(double(r)); % Remainder is error in the division in a sense
-else
-    q = 0;
 end
-
