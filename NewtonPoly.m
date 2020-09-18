@@ -45,6 +45,10 @@ while(true)
         px = double(px);
         p_primex = Horner(c_prime,a);   % Calculate the value p'(a)
         p_primex = double(p_primex);
+        
+        if(loud ~= 0)
+            fprintf(['Itr: ' num2str(nitr) '\tx: ' num2str(a,'%10.2e') '\t|f(x)|' num2str(px,'%10.2e') '\n']);
+        end
 
         if(p_primex ~= 0)               % If the derivative isn't exactly 0,
             a = a - px/p_primex;        % find the next iterate

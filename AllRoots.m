@@ -12,17 +12,18 @@ function [r,status] = AllRoots(c ,x0, epsilon, maxitr)
 %
 %Returns:
 %   r         - A list of the roots that ALLROOTS was able to find
-%   status    - 
-% 
-%
-%
-%
+%   status    - Status variable encoded as follows:
+%       status 0: Success! All the roots have been found!
+%       status 1: Failure, the iteration limit was reached in each test
+%                 mode, Real, Imaginary, and Complex
+%       status 2: Some failure for other reasons
 
 
 numRoots = length(c) - 1;   % Number of roots of p
 foundRoots = 0;             % Number of found roots
 realMode = 1;               % Real Mode on
 imaginaryMode = 0;          % Imaginary Mode off
+status = 2;                 % Initilize status to 2
 
 % If the initial condition is purely real, give a warning
 if(imag(x0) == 0)
@@ -58,7 +59,7 @@ while(foundRoots < numRoots)
                 disp('ComplexModeActivated');
                 imaginaryMode = 0;
             else
-                status = 2;
+                status = 1;
                 return;
             end
         else % NewtonPoly: The derivative is 0
@@ -66,11 +67,12 @@ while(foundRoots < numRoots)
             x0 = real(x0)+0.1 + (imag(x0)+0.1)*1i;
         end
     else
-        status = 2;
+        status = 1;
         return;
     end
     
 end
 
+% If the while loop ends, then all the roots have been found
 status = 0;
 
