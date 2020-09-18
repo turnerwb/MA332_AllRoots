@@ -68,7 +68,6 @@ while(true)
 
         % Exit with a success if criteria are met
         if(abs(real(pxbest)) <= epsilon)
-            disp(epsilon);
             status = 0;
             return;
         end

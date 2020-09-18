@@ -19,11 +19,16 @@ function [r,status] = AllRoots(c ,x0, epsilon, maxitr)
 %
 
 
-numRoots = length(c) - 1;
-foundRoots = 0;
-realMode = 1;       % Real mode on
-imaginaryMode = 0;
-xinitial = real(x0); % Start trying to find the real roots first
+numRoots = length(c) - 1;   % Number of roots of p
+foundRoots = 0;             % Number of found roots
+realMode = 1;               % Real Mode on
+imaginaryMode = 0;          % Imaginary Mode off
+
+% If the initial condition is purely real, give a warning
+if(imag(x0) == 0)
+    disp('Warning! x0 is purely real so AllRoots can only find real roots');
+end
+
 r = [];
 
 while(foundRoots < numRoots)
@@ -31,7 +36,7 @@ while(foundRoots < numRoots)
     if(realMode == 1)
         xinitial = real(x0);
     elseif(imaginaryMode == 1)
-        xinitial = imag(x0)*i;
+        xinitial = imag(x0)*1i;
     else
         xinitial = x0;
     end
@@ -46,11 +51,11 @@ while(foundRoots < numRoots)
     elseif(NPstatus == 1)
         if(nitr == maxitr) % Max iterations in NewtonPoly Reached
             if(realMode == 1)
-                disp(['ImagModeActivated']);
+                disp('ImagModeActivated');
                 imaginaryMode = 1;
                 realMode = 0;
             elseif(imaginaryMode == 1)
-                disp(['ComplexModeActivated']);
+                disp('ComplexModeActivated');
                 imaginaryMode = 0;
             else
                 status = 2;
@@ -58,7 +63,7 @@ while(foundRoots < numRoots)
             end
         else % NewtonPoly: The derivative is 0
             % Wiggle the initial condition
-            x0 = real(x0)+0.1 + (imag(x0)+0.1)*i;
+            x0 = real(x0)+0.1 + (imag(x0)+0.1)*1i;
         end
     else
         status = 2;
