@@ -66,3 +66,58 @@ disp('Func: Random polynomial');
 [roots, status] = AllRoots(c,x0,epsilon,maxitr);
 disp(['Roots: ' num2str(roots)]);
 disp(['Status: ' num2str(status)]);
+%% x^2
+syms x;
+R = [0 0];
+P = prod(x-R(1:length(R)));
+P = expand(P);
+c = fliplr(coeffs(P));
+disp('------------------------------------------------------------------');
+disp('Func: x^2');
+[roots, status] = AllRoots(c,x0,epsilon,maxitr);
+disp(['Roots: ' num2str(roots)]);
+disp(['Status: ' num2str(status)]);
+%% x^4+4*x^3+10*x^2+12*x+9
+syms x;
+R = [-1+sqrt(2)*i -1+sqrt(2)*i -1-sqrt(2)*i -1-sqrt(2)*i];
+P = prod(x-R(1:length(R)));
+P = expand(P);
+c = fliplr(coeffs(P));
+disp('------------------------------------------------------------------');
+disp('Func: x^4+4*x^3+10*x^2+12*x+9');
+[roots, status] = AllRoots(c,x0,epsilon,maxitr);
+disp(['Roots: ' num2str(roots)]);
+disp(['Status: ' num2str(status)]);
+%% x^4-10000.001*x^3+11.000*x^2-10000.001*x+10.000+0.*I
+syms x;
+R = [0.001 1e4 i -i];
+P = prod(x-R(1:length(R)));
+P = expand(P);
+c = fliplr(coeffs(P));
+disp('------------------------------------------------------------------');
+disp('Func: x^4-10000.001*x^3+11.000*x^2-10000.001*x+10.000+0.*I');
+[roots, status] = AllRoots(c,x0,epsilon,maxitr);
+disp(['Roots: ' num2str(roots)]);
+disp(['Status: ' num2str(status)]);
+%% x^7+3*x^6+7*x^5+13*x^4+16*x^3+16*x^2+12*x+4
+syms x;
+R = [-1 -1 -1 sqrt(2)*i -sqrt(2)*i];
+P = prod(x-R(1:length(R)));
+P = expand(P);
+c = fliplr(coeffs(P));
+disp('------------------------------------------------------------------');
+disp('Func: x^7+3*x^6+7*x^5+13*x^4+16*x^3+16*x^2+12*x+4');
+[roots, status] = AllRoots(c,x0,epsilon,maxitr);
+disp(['Roots: ' num2str(roots)]);
+disp(['Status: ' num2str(status)]);
+%% x^2+sqrt(2)*x+sqrt(3)*x+sqrt(2)*sqrt(3)
+syms x;
+R = [sqrt(2) sqrt(3)];
+P = prod(x-R(1:length(R)));
+P = expand(P);
+c = fliplr(coeffs(P));
+disp('------------------------------------------------------------------');
+disp('Func: x^2+sqrt(2)*x+sqrt(3)*x+sqrt(2)*sqrt(3)');
+[roots, status] = AllRoots(c,x0,epsilon,maxitr);
+disp(['Roots: ' num2str(roots)]);
+disp(['Status: ' num2str(status)]);
