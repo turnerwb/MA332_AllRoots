@@ -4,20 +4,26 @@ function [xbest,pxbest,nitr,q,status] = NewtonPoly(c,x0,epsilon,maxitr,loud)
 % 
 %   [xbest,pxbest,nitr,q,status] = NewtonPoly(c,x0,epsilon,maxitr,loud)
 % 
+%Args:
 %   c         - A vector that stores the coefficients of a polynomial p.
 %               It is in the order of highest to lowest degree
-%
 %   x0        - An initial guess at the location of the root of p
-%
 %   epsilon   - The convergence requirement: |p(xbest)| < epsilon
-% 
 %   maxitr    - The maximum number of interations 
-% 
 %   loud      - *Optional argument* that defaults to 0.  If nonzero, then
 %               the fucntion outputs information for each iteration
 % 
-% OUTPUTS AND STUFF
-
+%Returns:
+%   xbest     - The approximate root of p
+%   pxbest    - The value of p(xbest)
+%   nitr      - The number of iterations the algorithm went through
+%   q         - The coeffs of the quotient of p after dividing by (x-xbest)
+%   status    - Status variable encoded as follows:
+%       status 0: Success! Either both convergence criteria are satisfied  
+%                 or an exact root is calculated. 
+%       status 1: Failure, the iteration limit was reached or the function
+%                 landed on an x where p'(x) is 0
+%       status 2: Some failure for other reasons
 
 % If loud doesnt exist, default it to 0
 if ~exist('loud','var')
@@ -61,7 +67,8 @@ while(true)
         end
 
         % Exit with a success if criteria are met
-        if(abs(real(pxbest)) <= epsilon)  
+        if(abs(real(pxbest)) <= epsilon)
+            disp(epsilon);
             status = 0;
             return;
         end

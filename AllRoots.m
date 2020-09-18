@@ -1,6 +1,23 @@
 function [r,status] = AllRoots(c ,x0, epsilon, maxitr)
 %ALLROOTS Summary of this function goes here
-%   Detailed explanation goes here
+%
+%   [roots, status] = AllRoots(c, x0, epsilon, maxitr);
+%
+%Args:
+%   c         - A vector that stores the coefficients of a polynomial p.
+%               It is in the order of highest to lowest degree
+%   x0        - An initial guess at the location of the root of p
+%   epsilon   - The convergence requirement: |p(xbest)| < epsilon
+%   maxitr    - The maximum number of interations 
+%
+%Returns:
+%   r         - A list of the roots that ALLROOTS was able to find
+%   status    - 
+% 
+%
+%
+%
+
 
 numRoots = length(c) - 1;
 foundRoots = 0;
@@ -45,6 +62,7 @@ while(foundRoots < numRoots)
         end
     else
         status = 2;
+        return;
     end
     
 end
