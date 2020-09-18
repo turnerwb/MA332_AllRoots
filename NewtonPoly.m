@@ -36,18 +36,20 @@ c_prime = sym2poly(p_prime_sym);    % Get the coeffs of the derivative of p
 while(true)
     try
         [px, q] = Horner(c,a);          % Calculate the value p(a) and the reduced polynomial q
+        px = double(px);
         p_primex = Horner(c_prime,a);   % Calculate the value p'(a)
+        p_primex = double(p_primex);
 
         if(p_primex ~= 0)               % If the derivative isn't exactly 0,
             a = a - px/p_primex;        % find the next iterate
         else                
             status = 1;                 % Exit if the derivative results in 0
             disp('NewtonPoly failed: It landed at an x where p''(x) is 0');
-            break;
+            return;
         end
 
         % If this iteration is better than any previous one, save it
-        if(abs(px) < abs(pxbest))
+        if(abs(real(px)) < abs(real(pxbest)))
             xbest = a;
             pxbest = px;
         end
@@ -55,13 +57,13 @@ while(true)
         % Exit with success if an exact zero is found
         if(pxbest == 0)             
             status = 0;
-            break;
+            return;
         end
 
         % Exit with a success if criteria are met
-        if(abs(pxbest) <= epsilon)  
+        if(abs(real(pxbest)) <= epsilon)  
             status = 0;
-            break;
+            return;
         end
 
         % Exit if the max number of iterations has passed
@@ -69,9 +71,10 @@ while(true)
         if(nitr >= maxitr)
             status = 1;
             disp('NewtonPoly failed: Max Iterations Reached');
-            break;
+            return;
         end
-    catch
+    catch e
+        disp(e);
         status = 2;
         return;
     end

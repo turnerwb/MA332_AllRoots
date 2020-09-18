@@ -7,7 +7,7 @@ function [px ,q] = Horner(c ,x0)
 poly_length = length(c);
 
 % Make a new array with length of the polynomial - 1
-q = zeros(1,poly_length-1);
+q = sym(zeros(1,poly_length-1));
 
 % Initialize px with the first coeff of the polynomial
 px = c(1);
