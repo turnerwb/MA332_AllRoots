@@ -34,41 +34,46 @@ p_prime_sym = diff(p_sym);          % Get the derivative of p
 c_prime = sym2poly(p_prime_sym);    % Get the coeffs of the derivative of p 
 
 while(true)
-    
-    [px, q] = Horner(c,a);          % Calculate the value p(a) and the reduced polynomial q
-    p_primex = Horner(c_prime,a);   % Calculate the value p'(a)
-    
-    if(p_primex ~= 0)               % If the derivative isn't exactly 0,
-        a = a - px/p_primex;        % find the next iterate
-    else                
-        status = 1;                 % Exit if the derivative results in 0
-        disp('NewtonPoly failed: It landed at an x where p''(x) is 0');
-        break;
-    end
+    try
+        [px, q] = Horner(c,a);          % Calculate the value p(a) and the reduced polynomial q
+        p_primex = Horner(c_prime,a);   % Calculate the value p'(a)
 
-    % If this iteration is better than any previous one, save it
-    if(abs(px) < abs(pxbest))
-        xbest = a;
-        pxbest = px;
-    end
-    
-    % Exit with success if an exact zero is found
-    if(pxbest == 0)             
-        status = 0;
-        break;
-    end
-    
-    % Exit with a success if criteria are met
-    if(abs(pxbest) <= epsilon)  
-        status = 0;
-        break;
-    end
-    
-    % Exit if the max number of iterations has passed
-    nitr = nitr + 1;
-    if(nitr >= maxitr)
+        if(p_primex ~= 0)               % If the derivative isn't exactly 0,
+            a = a - px/p_primex;        % find the next iterate
+        else                
+            status = 1;                 % Exit if the derivative results in 0
+            disp('NewtonPoly failed: It landed at an x where p''(x) is 0');
+            break;
+        end
+
+        % If this iteration is better than any previous one, save it
+        if(abs(px) < abs(pxbest))
+            xbest = a;
+            pxbest = px;
+        end
+
+        % Exit with success if an exact zero is found
+        if(pxbest == 0)             
+            status = 0;
+            break;
+        end
+
+        % Exit with a success if criteria are met
+        if(abs(pxbest) <= epsilon)  
+            status = 0;
+            break;
+        end
+
+        % Exit if the max number of iterations has passed
+        nitr = nitr + 1;
+        if(nitr >= maxitr)
+            status = 1;
+            disp('NewtonPoly failed: Max Iterations Reached');
+            break;
+        end
+    catch
         status = 2;
-        break;
+        return;
     end
 end
 
